@@ -3,12 +3,27 @@
 {% block title %}Select a Quiz{% endblock %}
 
 {% block content %}
-  <h2>Select a Quiz</h2>
-  <ul>
-    {% for quiz in quizzes %}
-      <li><a href="{% url 'take_quiz' quiz.id %}">{{ quiz.title }}</a></li>
-    {% empty %}
-      <li>No quizzes available.</li>
-    {% endfor %}
-  </ul>
+  <div class="container">
+    <h2>Select a Quiz</h2>
+
+    <div class="dashboard-area mb-4">
+      {% if quizzes %}
+        <div class="row">
+          {% for quiz in quizzes %}
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">{{ quiz.title }}</h5>
+                  <p class="card-text">{{ quiz.description|truncatewords:20 }}</p>
+                  <a href="{% url 'take_quiz' quiz.id %}">Start Quiz</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      {% else %}
+        <p>No quizzes available.</p>
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}

@@ -159,3 +159,62 @@ body {
 .auth-container p a:hover {
     text-decoration: underline;
 }
+
+/* Dashboard Area Grid */
+.dashboard-area {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    align-items: start; /* Align items at the start to avoid vertical alignment issues */
+}
+
+/* Card Design */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.card-body {
+    padding: 16px;
+}
+
+/* Card Title */
+.card-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #343a40;
+    text-align: left; /* Ensure the title is left-aligned */
+}
+
+/* Card Text */
+.card-text {
+    font-size: 16px;
+    color: #555;
+    text-align: left; /* Ensure the description is left-aligned */
+}
+
+/* Link Styling */
+.card a {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #28a745;
+    color: #fff;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    margin-top: 16px;
+}
+
+.card a:hover {
+    background-color: #218838;
+}
+
+/* Make sure all links are green and styled properly */
+.card a:focus, .card a:active {
+    background-color: #218838;
+}

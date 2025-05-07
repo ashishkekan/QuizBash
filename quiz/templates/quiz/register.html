@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "quiz/base.html" %}
 
 {% block title %}Register - Quiz App{% endblock %}
 
@@ -8,17 +8,7 @@
     <form method="POST" class="auth-form">
         {% csrf_token %}
         
-        <label for="username">Username</label>
-        <input type="text" name="username" id="username" required>
-        
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email" required>
-        
-        <label for="password">Password</label>
-        <input type="password" name="password" id="password" required>
-        
-        <label for="password_confirm">Confirm Password</label>
-        <input type="password" name="password_confirm" id="password_confirm" required>
+        {{ form.as_p }}
         
         <button type="submit">Register</button>
     </form>

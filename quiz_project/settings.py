@@ -114,6 +114,7 @@ USE_TZ = True
 
 
 LOGIN_URL = "/login/"  # This should be the URL where your login page is located
+LOGOUT_URL = "/logout/"
 
 
 # Static files (CSS, JavaScript, Images)

@@ -113,6 +113,9 @@ USE_I18N = True
 USE_TZ = True
 
 
+LOGIN_URL = "/login/"  # This should be the URL where your login page is located
+
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 

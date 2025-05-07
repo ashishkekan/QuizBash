@@ -1,0 +1,12 @@
+{% extends "quiz/base.html" %}
+
+{% block title %}Quiz Home{% endblock %}
+
+{% block content %}
+<div class="home-container">
+    <h1>Welcome to the Quiz App</h1>
+    <p class="lead">Test your knowledge by taking one of our quizzes below.</p>
+    
+    <a href="{% url 'quiz_list' %}" class="btn btn-primary">Browse Quizzes</a>
+</div>
+{% endblock %}

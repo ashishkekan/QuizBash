@@ -1,4 +1,5 @@
 {% extends "quiz/base.html" %}
+{% load custom_filters %}
 
 {% block title %}Take Quiz - {{ quiz.title }}{% endblock %}
 
@@ -6,7 +7,7 @@
 <div class="quiz-container">
     <h2>{{ quiz.title }}</h2>
     <p>{{ quiz.description }}</p>
-    <p><strong>Time limit:</strong> {{ quiz.time_limit }} seconds</p>
+    <p><strong>Time limit:</strong> {{ quiz.time_limit|seconds_to_hms }} Hours</p>
 
     <form method="post">
         {% csrf_token %}
@@ -23,7 +24,10 @@
                 {% endfor %}
             </div>
         {% endfor %}
-        <button type="submit" class="btn btn-success">Submit</button>
+        <div class="form-buttons" style="display: flex; justify-content: space-between; margin-top: 20px;">
+            <a href="{% url 'quiz_list' %}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
     </form>
 </div>
 

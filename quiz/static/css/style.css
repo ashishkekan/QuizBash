@@ -241,3 +241,118 @@ body {
 .card a:focus, .card a:active {
     background-color: #218838;
 }
+
+/* Custom Styling for the Assign Quiz Page */
+
+/* Form Container */
+.assign-form {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Form Elements */
+.form-label {
+    font-weight: 600;
+    color: #333;
+}
+
+/* Select and Input Fields */
+.form-select, .form-control {
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    padding: 10px;
+    font-size: 16px;
+}
+
+.form-select:focus, .form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.3);
+}
+
+/* Button Styling */
+.btn {
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+.btn-success {
+    background-color: #28a745;
+    border-color: #28a745;
+}
+
+.btn-success:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.btn-success:focus, .btn-success:active {
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5);
+}
+
+/* Card Shadows */
+.card {
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    font-weight: 700;
+}
+
+/* Table Styling */
+.table th {
+    background-color: #f8f9fa;
+    text-align: center;
+    font-weight: 600;
+}
+
+.table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.table-bordered td, .table-bordered th {
+    border: 1px solid #ddd;
+}
+
+.table .badge {
+    font-size: 14px;
+    padding: 5px 10px;
+    border-radius: 10px;
+}
+
+/* Badge Styles for Status */
+.badge.bg-success {
+    background-color: #28a745;
+    color: white;
+}
+
+.badge.bg-warning {
+    background-color: #ffc107;
+    color: white;
+}
+
+.badge.text-dark {
+    color: #343a40 !important;
+}
+
+/* Empty Table Message */
+.text-muted {
+    font-style: italic;
+}
+
+/* Custom Margin for Cards */
+.card-header, .card-body {
+    padding: 20px;
+}
+
+/* Ensure Buttons are aligned to the right */
+.text-end {
+    text-align: right;
+}

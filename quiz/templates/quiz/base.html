@@ -13,6 +13,9 @@
             <ul class="nav-links">
                 <li><a href="{% url 'home' %}">Home</a></li>
                 <li><a href="{% url 'quiz_list' %}">Quizzes</a></li>
+                {% if user.is_staff %}
+                    <li><a href="{% url 'assign_quiz' %}">Quiz Users</a></li>
+                {% endif %}
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'logout' %}">Logout</a></li>
                 {% else %}

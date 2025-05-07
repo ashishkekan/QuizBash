@@ -1,10 +1,12 @@
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 
-from .models import Choice, Quiz
+from .models import AssignedQuiz, Choice, Quiz
 
 
 def register(request):
@@ -42,7 +44,7 @@ def user_login(request):
 
 
 def user_logout(request):
-    logout(request)
+    django_logout(request)
     return redirect("login")
 
 
@@ -80,3 +82,28 @@ def take_quiz(request, quiz_id):
 def home(request):
     quiz = Quiz.objects.all()
     return render(request, "quiz/home.html", {"quiz": quiz})
+
+
+@login_required
+def assign_quiz_view(request):
+    users = User.objects.all()
+    quizzes = Quiz.objects.all()
+
+    if request.method == "POST":
+        user_id = request.POST.get("user_id")
+        quiz_id = request.POST.get("quiz_id")
+
+        if user_id and quiz_id:
+            AssignedQuiz.objects.get_or_create(user_id=user_id, quiz_id=quiz_id)
+        return redirect("assign_quiz")
+
+    assignments = AssignedQuiz.objects.select_related("user", "quiz")
+    return render(
+        request,
+        "quiz/assign_quiz.html",
+        {
+            "users": users,
+            "quizzes": quizzes,
+            "assignments": assignments,
+        },
+    )

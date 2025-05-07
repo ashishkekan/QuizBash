@@ -1,29 +1,42 @@
-<h2>{{ quiz.title }}</h2>
-<p>{{ quiz.description }}</p>
-<p>Time limit: {{ quiz.time_limit }} seconds</p>
+{% extends "quiz/base.html" %}
 
-<form method="post">
-  {% csrf_token %}
-  <div id="timer">Time remaining: {{ quiz.time_limit }}s</div>
-  <hr>
-  {% for question in questions %}
-    <p><strong>{{ question.text }}</strong></p>
-    {% for choice in question.choice_set.all %}
-      <label><input type="radio" name="{{ question.id }}" value="{{ choice.id }}"> {{ choice.text }}</label><br>
-    {% endfor %}
-  {% endfor %}
-  <button type="submit">Submit</button>
-</form>
+{% block title %}Take Quiz - {{ quiz.title }}{% endblock %}
+
+{% block content %}
+<div class="quiz-container">
+    <h2>{{ quiz.title }}</h2>
+    <p>{{ quiz.description }}</p>
+    <p><strong>Time limit:</strong> {{ quiz.time_limit }} seconds</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <div id="timer" class="timer">Time remaining: {{ quiz.time_limit }}s</div>
+        <hr>
+        {% for question in questions %}
+            <div class="question-block">
+                <p><strong>{{ forloop.counter }}. {{ question.text }}</strong></p>
+                {% for choice in question.choice_set.all %}
+                    <label class="choice-label">
+                        <input type="radio" name="{{ question.id }}" value="{{ choice.id }}">
+                        {{ choice.text }}
+                    </label><br>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <button type="submit" class="btn btn-success">Submit</button>
+    </form>
+</div>
 
 <script>
-  let timeLeft = {{ quiz.time_limit }};
-  const timer = document.getElementById("timer");
-  const interval = setInterval(() => {
-    timeLeft -= 1;
-    timer.innerText = "Time remaining: " + timeLeft + "s";
-    if (timeLeft <= 0) {
-      clearInterval(interval);
-      document.forms[0].submit();
-    }
-  }, 1000);
+    let timeLeft = {{ quiz.time_limit }};
+    const timer = document.getElementById("timer");
+    const interval = setInterval(() => {
+        timeLeft -= 1;
+        timer.innerText = "Time remaining: " + timeLeft + "s";
+        if (timeLeft <= 0) {
+            clearInterval(interval);
+            document.forms[0].submit();
+        }
+    }, 1000);
 </script>
+{% endblock %}

@@ -5,9 +5,9 @@
 {% block content %}
 <div class="container py-5">
     <!-- Assign Quiz Card -->
-    <div class="card shadow-sm mb-5">
-        <div class="card-header bg-primary text-white">
-            <h4 class="mb-0">Assign Quiz to Users</h4>
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Assign Quiz to Users</h4>
         </div>
         <div class="card-body">
             <form method="post" class="row gy-3 gx-4 assign-form">
@@ -22,10 +22,6 @@
                             <option value="{{ user.id }}">{{ user.get_full_name|default:user.username }}</option>
                         {% endfor %}
                     </select>
-                </div>
-
-                <!-- Select Quiz -->
-                <div class="col-md-6">
                     <label for="quiz_id" class="form-label fw-bold">Quiz</label>
                     <select name="quiz_id" id="quiz_id" class="form-select" required>
                         <option value="">-- Select Quiz --</option>
@@ -33,10 +29,6 @@
                             <option value="{{ quiz.id }}">{{ quiz.title }}</option>
                         {% endfor %}
                     </select>
-                </div>
-
-                <!-- Submit Button -->
-                <div class="col-12 text-end">
                     <button type="submit" class="btn btn-success px-4">Assign</button>
                 </div>
             </form>
@@ -44,46 +36,42 @@
     </div>
 
     <!-- Assigned Quizzes Table -->
-    <div class="card shadow-sm">
-        <div class="card-header bg-secondary text-white">
-            <h5 class="mb-0">Assigned Quizzes</h5>
+    <div class="card">
+        <div class="card-header">
+            <h5 class="card-title">Assigned Quizzes</h5>
         </div>
-        <div class="card-body p-0">
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover mb-0 align-middle">
-                    <thead class="table-light text-center">
-                        <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">User</th>
-                            <th scope="col">Quiz</th>
-                            <th scope="col">Assigned At</th>
-                            <th scope="col">Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in assignments %}
-                            <tr>
-                                <td class="text-center">{{ forloop.counter }}</td>
-                                <td>{{ item.user.get_full_name|default:item.user.username }}</td>
-                                <td>{{ item.quiz.title }}</td>
-                                <td class="text-center">{{ item.assigned_at|date:"Y-m-d H:i" }}</td>
-                                <td class="text-center">
-                                    {% if item.completed %}
-                                        <span class="badge bg-success">Completed</span>
-                                    {% else %}
-                                        <span class="badge bg-warning text-dark">Pending</span>
-                                    {% endif %}
-                                </td>
-                            </tr>
-                        {% empty %}
-                            <tr>
-                                <td colspan="5" class="text-center text-muted py-3">No quiz assignments found.</td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+        <table class="table table-striped">
+            <thead class="table-light text-center">
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">User</th>
+                    <th scope="col">Quiz</th>
+                    <th scope="col">Assigned At</th>
+                    <th scope="col">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in assignments %}
+                    <tr>
+                        <td class="text-center">{{ forloop.counter }}</td>
+                        <td>{{ item.user.get_full_name|default:item.user.username }}</td>
+                        <td>{{ item.quiz.title }}</td>
+                        <td class="text-center">{{ item.assigned_at|date:"Y-m-d H:i" }}</td>
+                        <td class="text-center">
+                            {% if item.completed %}
+                                <span class="badge bg-success">Completed</span>
+                            {% else %}
+                                <span class="badge bg-warning text-dark">Pending</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center text-muted py-3">No quiz assignments found.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
     </div>
 </div>
 {% endblock %}

@@ -85,6 +85,12 @@ def home(request):
 
 
 @login_required
+def users(request):
+    users = User.objects.all()
+    return render(request, "quiz/users.html", {"users": users})
+
+
+@login_required
 def assign_quiz_view(request):
     users = User.objects.all()
     quizzes = Quiz.objects.all()

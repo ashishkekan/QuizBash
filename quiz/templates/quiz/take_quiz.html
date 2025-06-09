@@ -4,39 +4,51 @@
 {% block title %}Take Quiz - {{ quiz.title }}{% endblock %}
 
 {% block content %}
-<div class="quiz-container">
-    <h2>{{ quiz.title }}</h2>
-    <p>{{ quiz.description }}</p>
-    <p><strong>Time limit:</strong> {{ quiz.time_limit|seconds_to_hms }} Hours</p>
-
-    <form method="post">
-        {% csrf_token %}
-        <div id="timer" class="timer">Time remaining: {{ quiz.time_limit }}s</div>
-        <hr>
-        {% for question in questions %}
-            <div class="question-block">
-                <p><strong>{{ forloop.counter }}. {{ question.text }}</strong></p>
-                {% for choice in question.choice_set.all %}
-                    <label class="choice-label">
-                        <input type="radio" name="{{ question.id }}" value="{{ choice.id }}">
-                        {{ choice.text }}
-                    </label><br>
-                {% endfor %}
+<section class="py-20 bg-gray-50">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-md p-8 border border-gray-200">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-2xl font-bold text-gray-900">{{ quiz.title }}</h2>
+                <div id="timer" class="text-purple-600 font-medium text-lg">
+                    Time remaining: {{ quiz.time_limit }}s
+                </div>
             </div>
-        {% endfor %}
-        <div class="form-buttons" style="display: flex; justify-content: space-between; margin-top: 20px;">
-            <a href="{% url 'quiz_list' %}" class="btn btn-secondary">Cancel</a>
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <p class="text-gray-600 mb-4">{{ quiz.description }}</p>
+            <p class="text-gray-600 mb-6"><strong>Time limit:</strong> {{ quiz.time_limit|seconds_to_hms }} Hours</p>
+            <form method="post" class="space-y-8">
+                {% csrf_token %}
+                <hr class="border-gray-200">
+                {% for question in questions %}
+                    <div class="question-block space-y-4">
+                        <p class="text-lg font-medium text-gray-900"><strong>{{ forloop.counter }}. {{ question.text }}</strong></p>
+                        {% for choice in question.choice_set.all %}
+                            <label class="flex items-center space-x-2 cursor-pointer">
+                                <input type="radio" name="{{ question.id }}" value="{{ choice.id }}" class="form-radio text-purple-600 focus:ring-purple-600">
+                                <span class="text-gray-700">{{ choice.text }}</span>
+                            </label>
+                        {% endfor %}
+                    </div>
+                    <hr class="border-gray-200">
+                {% endfor %}
+                <div class="flex justify-between">
+                    <a href="{% url 'quiz_list' %}" class="px-6 py-3 border-2 border-gray-300 text-gray-700 font-bold rounded-lg hover:bg-gray-100 transition duration-300">
+                        Cancel
+                    </a>
+                    <button type="submit" class="px-6 py-3 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 transition duration-300">
+                        Submit
+                    </button>
+                </div>
+            </form>
         </div>
-    </form>
-</div>
+    </div>
+</section>
 
 <script>
     let timeLeft = {{ quiz.time_limit }};
     const timer = document.getElementById("timer");
     const interval = setInterval(() => {
         timeLeft -= 1;
-        timer.innerText = "Time remaining: " + timeLeft + "s";
+        timer.innerText = `Time remaining: ${timeLeft}s`;
         if (timeLeft <= 0) {
             clearInterval(interval);
             document.forms[0].submit();

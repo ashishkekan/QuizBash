@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
 
 from quiz.forms import StyledUserCreationForm
@@ -51,13 +52,13 @@ def user_logout(request):
 
 @login_required
 def quiz_list(request):
-    quizzes = Quiz.objects.all()
+    quizzes = Quiz.objects.filter(assignedquiz__user=request.user)
     return render(request, "quiz/quiz_list.html", {"quizzes": quizzes})
 
 
 @login_required
 def take_quiz(request, quiz_id):
-    quiz = get_object_or_404(Quiz, pk=quiz_id)
+    quiz = get_object_or_404(Quiz, pk=quiz_id, assignedquiz__user=request.user)
     questions = quiz.question_set.all()
 
     if request.method == "POST":
@@ -68,6 +69,10 @@ def take_quiz(request, quiz_id):
                 choice = Choice.objects.get(pk=selected)
                 if choice.is_correct:
                     score += 1
+
+        # Optional: mark the quiz as completed
+        AssignedQuiz.objects.filter(user=request.user, quiz=quiz).update(completed=True)
+
         return render(
             request,
             "quiz/result.html",

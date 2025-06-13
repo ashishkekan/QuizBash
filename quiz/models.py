@@ -36,3 +36,6 @@ class AssignedQuiz(models.Model):
 
     def __str__(self):
         return f"{self.quiz.title} → {self.user.username}"
+
+    class Meta:
+        unique_together = ("quiz", "user")

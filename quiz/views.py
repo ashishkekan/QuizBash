@@ -2,26 +2,27 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
 from django.shortcuts import get_object_or_404, redirect, render
+
+from quiz.forms import StyledUserCreationForm
 
 from .models import AssignedQuiz, Choice, Quiz
 
 
 def register(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = StyledUserCreationForm(request.POST or None)
         if form.is_valid():
             user = form.save()
-            print(user, "#############")
             login(request, user)
             messages.success(request, "Registration successful!")
             return redirect("home")
         else:
-            messages.error(request, "Registration failed. Please try again.")
+            messages.error(
+                request, "Registration failed. Please correct the errors below."
+            )
     else:
-        form = UserCreationForm()
+        form = StyledUserCreationForm()
 
     return render(request, "quiz/register.html", {"form": form})
 

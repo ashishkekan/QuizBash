@@ -3,75 +3,88 @@
 {% block title %}Assign Quizzes{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <!-- Assign Quiz Card -->
-    <div class="card">
-        <div class="card-header">
-            <h4 class="card-title">Assign Quiz to Users</h4>
+<section class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Assign Quizzes to Users</h2>
+            <p class="text-xl text-gray-600">Easily assign quizzes to users with our intuitive interface</p>
         </div>
-        <div class="card-body">
-            <form method="post" class="row gy-3 gx-4 assign-form">
-                {% csrf_token %}
 
-                <!-- Select User -->
-                <div class="col-md-6">
-                    <label for="user_id" class="form-label fw-bold">User</label>
-                    <select name="user_id" id="user_id" class="form-select" required>
-                        <option value="">-- Select User --</option>
-                        {% for user in users %}
-                            <option value="{{ user.id }}">{{ user.get_full_name|default:user.username }}</option>
-                        {% endfor %}
-                    </select>
-                    <label for="quiz_id" class="form-label fw-bold">Quiz</label>
-                    <select name="quiz_id" id="quiz_id" class="form-select" required>
-                        <option value="">-- Select Quiz --</option>
-                        {% for quiz in quizzes %}
-                            <option value="{{ quiz.id }}">{{ quiz.title }}</option>
-                        {% endfor %}
-                    </select>
-                    <button type="submit" class="btn btn-success px-4">Assign</button>
+        <!-- Assign Quiz Card -->
+        <div class="bg-white rounded-xl shadow-md p-8 mb-8 border border-gray-200 hover:shadow-lg transition duration-300">
+            <h3 class="text-xl font-bold text-gray-900 mb-6">Assign a Quiz</h3>
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                <div class="grid md:grid-cols-2 gap-6">
+                    <!-- Select User -->
+                    <div>
+                        <label for="user_id" class="block text-sm font-medium text-gray-700 mb-2">User</label>
+                        <select name="user_id" id="user_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-600 focus:border-purple-600" required>
+                            <option value="">-- Select User --</option>
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.get_full_name|default:user.username }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <!-- Select Quiz -->
+                    <div>
+                        <label for="quiz_id" class="block text-sm font-medium text-gray-700 mb-2">Quiz</label>
+                        <select name="quiz_id" id="quiz_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-600 focus:border-purple-600" required>
+                            <option value="">-- Select Quiz --</option>
+                            {% for quiz in quizzes %}
+                                <option value="{{ quiz.id }}">{{ quiz.title }} {% if quiz.category %}({{ quiz.category.name }}){% endif %}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="px-6 py-3 bg-purple-600 text-white font-bold rounded-lg hover:bg-purple-700 transition duration-300">
+                        Assign Quiz
+                    </button>
                 </div>
             </form>
         </div>
-    </div>
 
-    <!-- Assigned Quizzes Table -->
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title">Assigned Quizzes</h5>
+        <!-- Assigned Quizzes Table -->
+        <div class="bg-white rounded-xl shadow-md p-8 border border-gray-200">
+            <h3 class="text-xl font-bold text-gray-900 mb-6">Assigned Quizzes</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700 text-center">#</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700">User</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700">Quiz</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700">Category</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700 text-center">Assigned At</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700 text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in assignments %}
+                            <tr class="border-t border-gray-200">
+                                <td class="px-6 py-4 text-center">{{ forloop.counter }}</td>
+                                <td class="px-6 py-4">{{ item.user.get_full_name|default:item.user.username }}</td>
+                                <td class="px-6 py-4">{{ item.quiz.title }}</td>
+                                <td class="px-6 py-4">{{ item.quiz.category.name|default:"Uncategorized" }}</td>
+                                <td class="px-6 py-4 text-center">{{ item.assigned_at|date:"Y-m-d H:i" }}</td>
+                                <td class="px-6 py-4 text-center">
+                                    {% if item.completed %}
+                                        <span class="px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs">Completed</span>
+                                    {% else %}
+                                        <span class="px-2 py-1 bg-yellow-100 text-yellow-600 rounded-full text-xs">Pending</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">No quiz assignments found.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <table class="table table-striped">
-            <thead class="table-light text-center">
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">User</th>
-                    <th scope="col">Quiz</th>
-                    <th scope="col">Assigned At</th>
-                    <th scope="col">Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in assignments %}
-                    <tr>
-                        <td class="text-center">{{ forloop.counter }}</td>
-                        <td>{{ item.user.get_full_name|default:item.user.username }}</td>
-                        <td>{{ item.quiz.title }}</td>
-                        <td class="text-center">{{ item.assigned_at|date:"Y-m-d H:i" }}</td>
-                        <td class="text-center">
-                            {% if item.completed %}
-                                <span class="badge bg-success">Completed</span>
-                            {% else %}
-                                <span class="badge bg-warning text-dark">Pending</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-3">No quiz assignments found.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
     </div>
-</div>
+</section>
 {% endblock %}

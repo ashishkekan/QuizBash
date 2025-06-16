@@ -3,39 +3,45 @@
 {% block title %}Users{% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <div class="card">
-        <div class="card-header">
-            <h5 class="card-title">Users</h5>
+<section class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">User Management</h2>
+            <p class="text-xl text-gray-600">View and manage all registered users</p>
         </div>
-        <table class="table table-striped">
-            <thead class="table-light text-center">
-                <tr>
-                    <th scope="col">Sr. No.</th>
-                    <th scope="col">Username</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">Email</th>
-                    <th scope="col">Join Date</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in users %}
-                    <tr>
-                        <td class="text-center">{{ forloop.counter }}</td>
-                        <td>{{ item.username }}</td>
-                        <td>{{ item.first_name }}</td>
-                        <td>{{ item.last_name }}</td>
-                        <td>{{ item.email}}</td>
-                        <td>{{ item.date_joined|date:"Y-m-d H:i" }}</td>
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="5" class="text-center text-muted py-3">No quiz assignments found.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <div class="bg-white rounded-xl shadow-md p-8 border border-gray-200">
+            <h3 class="text-xl font-bold text-gray-900 mb-6">Users</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700 text-center">Sr. No.</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700">Username</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700">First Name</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700">Last Name</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700">Email</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700">Join Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in users %}
+                            <tr class="border-t border-gray-200">
+                                <td class="px-6 py-4 text-center">{{ forloop.counter }}</td>
+                                <td class="px-6 py-4">{{ item.username }}</td>
+                                <td class="px-6 py-4">{{ item.first_name }}</td>
+                                <td class="px-6 py-4">{{ item.last_name }}</td>
+                                <td class="px-6 py-4">{{ item.email }}</td>
+                                <td class="px-6 py-4">{{ item.date_joined|date:"Y-m-d H:i" }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="6" class="px-6 py-4 text-center text-gray-500">No users found.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</div>
+</section>
 {% endblock %}

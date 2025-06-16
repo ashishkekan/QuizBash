@@ -1,23 +1,53 @@
 {% extends "quiz/base.html" %}
 
+{% load custom_filters %}
+
 {% block title %}Select a Quiz{% endblock %}
 
 {% block content %}
-  <h2>Select a Quiz</h2>
-
-  <div class="dashboard-area mb-4">
-    {% if quizzes %}
-      {% for quiz in quizzes %}
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">{{ quiz.title }}</h5>
-            <p class="card-text">{{ quiz.description|truncatewords:20 }}</p>
-            <a href="{% url 'take_quiz' quiz.id %}">Start Quiz</a>
-          </div>
+<section class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Choose Your Quiz</h2>
+            <p class="text-xl text-gray-600">Explore our collection of exciting quizzes</p>
         </div>
-      {% endfor %}
-    {% else %}
-      <p>No quizzes available.</p>
-    {% endif %}
-  </div>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% if quizzes %}
+                {% for quiz in quizzes %}
+                    <div class="quiz-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300 hover:-translate-y-1 hover:shadow-lg">
+                        <div class="h-48 bg-purple-100 flex items-center justify-center">
+                            <i class="fas fa-question-circle text-purple-600 text-6xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="bg-purple-100 text-purple-600 text-xs px-2 py-1 rounded">{{ quiz.category.name|default:"Uncategorized" }}</span>
+                                <div class="flex items-center text-gray-500 text-sm">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    <span>{{ quiz.time_limit|div:60 }} min</span>
+                                </div>
+                            </div>
+                            <h3 class="font-bold text-xl mb-2">{{ quiz.title }}</h3>
+                            <p class="text-gray-600 mb-4">{{ quiz.description|truncatewords:20 }}</p>
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center">
+                                    <i class="fas fa-user text-gray-500 mr-1"></i>
+                                    <span class="text-sm text-gray-600">Participants</span>
+                                </div>
+                                <div>
+                                    <a href="{% url 'take_quiz' quiz.id %}" class="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition text-sm font-medium">
+                                        Start Quiz
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <div class="col-span-full text-center text-gray-600">
+                    <p class="text-xl">No quizzes available at the moment.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock %}

@@ -13,3 +13,11 @@ def seconds_to_hms(value):
         return f"{hours:02d}:{minutes:02d}:{seconds:02d}"
     except (ValueError, TypeError):
         return "00:00:00"
+
+
+@register.filter
+def div(value, arg):
+    try:
+        return int(value) // int(arg)
+    except (ValueError, ZeroDivisionError):
+        return None

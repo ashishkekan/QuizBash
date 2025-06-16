@@ -3,6 +3,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as django_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Sum
 from django.shortcuts import get_object_or_404, redirect, render
 
 from quiz.forms import StyledUserCreationForm
@@ -53,7 +54,13 @@ def user_logout(request):
 @login_required
 def quiz_list(request):
     quizzes = Quiz.objects.filter(assignedquiz__user=request.user)
-    return render(request, "quiz/quiz_list.html", {"quizzes": quizzes})
+    return render(
+        request,
+        "quiz/quiz_list.html",
+        {
+            "quizzes": quizzes,
+        },
+    )
 
 
 @login_required
@@ -70,13 +77,20 @@ def take_quiz(request, quiz_id):
                 if choice.is_correct:
                     score += 1
 
-        # Optional: mark the quiz as completed
-        AssignedQuiz.objects.filter(user=request.user, quiz=quiz).update(completed=True)
+        # Update AssignedQuiz with score and mark as completed
+        assigned_quiz = AssignedQuiz.objects.get(user=request.user, quiz=quiz)
+        assigned_quiz.score = score
+        assigned_quiz.completed = True
+        assigned_quiz.save()
 
         return render(
             request,
             "quiz/result.html",
-            {"quiz": quiz, "score": score, "total": len(questions)},
+            {
+                "quiz": quiz,
+                "score": score,
+                "total": len(questions),
+            },
         )
 
     return render(
@@ -85,9 +99,21 @@ def take_quiz(request, quiz_id):
 
 
 @login_required
+def leaderboard(request):
+    leaderboard = (
+        AssignedQuiz.objects.filter(completed=True)
+        .select_related("user")
+        .values("user__username", "quiz__title")
+        .annotate(total_score=Sum("score"))
+        .order_by("-total_score")[:10]
+    )
+    return render(request, "quiz/leaderboard.html", {"leaderboard": leaderboard})
+
+
+@login_required
 def home(request):
-    quiz = Quiz.objects.all()
-    return render(request, "quiz/home.html", {"quiz": quiz})
+    quizzes = Quiz.objects.all()
+    return render(request, "quiz/home.html", {"quizzes": quizzes})
 
 
 @login_required

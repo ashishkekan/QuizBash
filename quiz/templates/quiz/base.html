@@ -49,6 +49,7 @@
                 <div class="hidden md:flex items-center space-x-8">
                     <a href="{% url 'home' %}" class="text-purple-600 font-medium">Home</a>
                     <a href="{% url 'quiz_list' %}" class="text-gray-600 hover:text-purple-600 transition">Quizzes</a>
+                    <a href="{% url 'leaderboard' %}" class="text-gray-600 hover:text-purple-600 transition">Leaderboard</a>
                     {% if user.is_staff %}
                         <a href="{% url 'users' %}" class="text-gray-600 hover:text-purple-600 transition">Users</a>
                         <a href="{% url 'assign_quiz' %}" class="text-gray-600 hover:text-purple-600 transition">Assign Quiz</a>
@@ -94,7 +95,7 @@
                     <ul class="space-y-2">
                         <li><a href="{% url 'home' %}" class="text-gray-400 hover:text-white transition">Home</a></li>
                         <li><a href="{% url 'quiz_list' %}" class="text-gray-400 hover:text-white transition">Quizzes</a></li>
-                        <li><a href="#" class="text-gray-400 hover:text-white transition">About Us</a></li>
+                        <li><a href="{% url 'leaderboard' %}" class="text-gray-400 hover:text-white transition">Leaderboard</a></li>
                         <li><a href="#" class="text-gray-400 hover:text-white transition">Contact</a></li>
                     </ul>
                 </div>
@@ -140,3 +141,5 @@
             });
         });
     </script>
+</body>
+</html>

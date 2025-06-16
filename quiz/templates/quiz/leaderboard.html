@@ -1,0 +1,43 @@
+{% extends "quiz/base.html" %}
+
+{% block title %}Leaderboard{% endblock %}
+
+{% block content %}
+<section class="py-20 bg-gray-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Leaderboard</h2>
+            <p class="text-xl text-gray-600">Top performers across all quizzes</p>
+        </div>
+        <div class="bg-white rounded-xl shadow-md p-8 border border-gray-200">
+            <h3 class="text-xl font-bold text-gray-900 mb-6">Top 10 Players</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left">
+                    <thead class="bg-gray-100">
+                        <tr>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700 text-center">Rank</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700">Username</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700">Quiz</th>
+                            <th class="px-6 py-3 text-sm font-medium text-gray-700 text-center">Total Score</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in leaderboard %}
+                            <tr class="border-t border-gray-200">
+                                <td class="px-6 py-4 text-center">{{ forloop.counter }}</td>
+                                <td class="px-6 py-4 ">{{ entry.user__username }}</td>
+                                <td class="px-6 py-4 ">{{ entry.quiz__title }}</td>
+                                <td class="px-6 py-4 text-center">{{ entry.total_score }}</td>
+                            </tr>
+                        {% empty %}
+                            <tr>
+                                <td colspan="3" class="px-6 py-4 text-center text-gray-500">No leaderboard data available.</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

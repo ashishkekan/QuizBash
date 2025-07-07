@@ -38,7 +38,6 @@
     </style>
 </head>
 <body class="bg-gray-50 font-sans">
-    <!-- Navigation -->
     <nav class="bg-white shadow-lg fixed top-0 left-0 right-0 z-50">
         <div class="max-w-6xl mx-auto px-4">
             <div class="flex justify-between items-center py-4">
@@ -67,13 +66,11 @@
         </div>
     </nav>
 
-    <!-- Main Content -->
     <main class="content">
         {% block content %}
         {% endblock %}
     </main>
 
-    <!-- Footer -->
     <footer class="bg-gray-900 text-white py-12">
         <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
@@ -133,7 +130,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Add interactivity for mobile menu toggle
             const mobileMenuButton = document.querySelector('.md\\:hidden');
             const navLinks = document.querySelector('.md\\:flex');
             mobileMenuButton.addEventListener('click', () => {

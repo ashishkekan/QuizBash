@@ -6,9 +6,8 @@ from django.contrib.auth.models import User
 from django.db.models import Sum
 from django.shortcuts import get_object_or_404, redirect, render
 
-from quiz.forms import StyledUserCreationForm
-
-from .models import AssignedQuiz, Choice, Quiz
+from quiz.forms import LoginForm, StyledUserCreationForm
+from quiz.models import AssignedQuiz, Choice, Quiz
 
 
 def register(request):
@@ -31,19 +30,23 @@ def register(request):
 
 def user_login(request):
     if request.method == "POST":
-        username = request.POST["username"]
-        password = request.POST["password"]
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data["username"]
+            password = form.cleaned_data["password"]
 
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            messages.success(request, "Login successful!")
-            next_page = request.GET.get("next", "home")
-            return redirect(next_page)
-        else:
-            messages.error(request, "Invalid username or password.")
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, "Login successful!")
+                next_page = request.GET.get("next", "home")
+                return redirect(next_page)
+            else:
+                messages.error(request, "Invalid username or password.")
+    else:
+        form = LoginForm()
 
-    return render(request, "quiz/login.html")
+    return render(request, "quiz/login.html", {"form": form})
 
 
 def user_logout(request):

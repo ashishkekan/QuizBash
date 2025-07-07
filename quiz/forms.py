@@ -30,3 +30,19 @@ class StyledUserCreationForm(UserCreationForm):
                     "class": "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-purple-600 focus:border-purple-600"
                 }
             )
+
+
+class LoginForm(forms.Form):
+    username = forms.CharField(
+        label="Username",
+        max_length=150,
+        widget=forms.TextInput(
+            attrs={"class": "form-control", "placeholder": "Username"}
+        ),
+    )
+    password = forms.CharField(
+        label="Password",
+        widget=forms.PasswordInput(
+            attrs={"class": "form-control", "placeholder": "Password"}
+        ),
+    )
